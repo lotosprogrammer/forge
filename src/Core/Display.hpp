@@ -4,18 +4,21 @@
 #include <vector>
 #include <memory>
 
-#include <GLFW/glfw3.h>
 
 #include <vulkan/vulkan.h>
 
+#define GLFW_INCLUDE_VULKAN
+#include <GLFW/glfw3.h>
+
 #include "Device.hpp"
+#include "Window.hpp"
 
 namespace Forge{
 
 class Display{
 public:
     Display();
-    Display(Device& device, VkInstance instance);
+    Display(VkInstance instance, Window* window);
     ~Display();
     Display(const Display& other);
     Display& operator=(const Display& other);
@@ -24,7 +27,11 @@ public:
 private:
     void CopyFrom(const Display& other);
 
-    Device* device;
+    void CreateSurface();
+
+    Window* window;
+    VkDevice* device;//for convenience
+
     VkInstance instance;
 
     std::shared_ptr<VkSwapchainKHR> swapchain;

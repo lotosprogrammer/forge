@@ -12,8 +12,8 @@ class Device{
 public:
     Device();
 
-    VkPhysicalDevice GetPhysicalDevice();
-    VkDevice GetLogicalDevice();
+    static VkPhysicalDevice& GetPhysicalDevice();
+    static VkDevice& GetLogicalDevice();
 
     void SetupDevice(VkInstance instance);
     void CleanupDevice();
@@ -33,8 +33,8 @@ private:
     void GetQueues();
 
 
-    VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
-    VkDevice logicalDevice = VK_NULL_HANDLE;
+    static VkPhysicalDevice physicalDevice;
+    static VkDevice logicalDevice;
 
     VkInstance instance = VK_NULL_HANDLE;
 };

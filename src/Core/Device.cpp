@@ -2,6 +2,9 @@
 
 namespace Forge{
 
+VkDevice Device::logicalDevice = VK_NULL_HANDLE;
+VkPhysicalDevice Device::physicalDevice = VK_NULL_HANDLE;
+
 Device::Device(){}
 
 void Device::SetupDevice(VkInstance instance){
@@ -110,11 +113,11 @@ void Device::GetQueues(){
 
 }
 
-VkDevice Device::GetLogicalDevice(){
+VkDevice& Device::GetLogicalDevice(){
     return logicalDevice;
 }
 
-VkPhysicalDevice Device::GetPhysicalDevice(){
+VkPhysicalDevice& Device::GetPhysicalDevice(){
     return physicalDevice;
 }
 
