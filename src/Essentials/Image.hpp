@@ -4,6 +4,8 @@
 
 #include <vulkan/vulkan.h>
 
+#include "../Core/Device.hpp"
+
 namespace Forge{
 
 class Image{
@@ -17,9 +19,12 @@ public:
 
     VkImage GetImage();
 private:
+    void CopyFrom(const Image& other);
 
     VkImage image;
-    VkDeviceMemory memory;
+    VkDeviceMemory memory;//todo, make it a class
+
+
 
 };
 //queue families handled by scheduler
