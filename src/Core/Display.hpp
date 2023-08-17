@@ -29,8 +29,8 @@ private:
 
     void CreateSurface();
 
-    Window* window;
-    VkDevice* device;//for convenience
+    Window* pWindow;
+    VkDevice* pDevice;//for convenience
 
     VkInstance instance;
 

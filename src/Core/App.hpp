@@ -31,7 +31,6 @@ private:
     void CheckExtensionSupport();
 
     Window window;
-    Device device;
 
     VkInstance instance = VK_NULL_HANDLE;
     std::vector<const char*> extensions = {

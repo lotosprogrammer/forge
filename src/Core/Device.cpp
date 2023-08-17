@@ -5,10 +5,21 @@ namespace Forge{
 VkDevice Device::logicalDevice = VK_NULL_HANDLE;
 VkPhysicalDevice Device::physicalDevice = VK_NULL_HANDLE;
 
-Device::Device(){}
+VkInstance Device::instance = VK_NULL_HANDLE;
 
-void Device::SetupDevice(VkInstance instance){
-    this->instance = instance;
+std::vector<VkQueue> Device::graphicsQueues = {};
+std::vector<VkQueue> Device::transferQueues = {};
+std::vector<VkDeviceQueueCreateInfo> Device::deviceQueueCreateInfos = {};
+std::vector<std::vector<float>> Device::queuePriorities = {};
+std::vector<VkQueueFamilyProperties> Device::queueFamilyProperties = {};
+
+std::vector<uint32_t> Device::transferQueueFamilyIndices = {};
+std::vector<uint32_t> Device::graphicsQueueFamilyIndices = {};
+uint32_t Device::atGraphicsQueueFamilyIndex = 0;
+uint32_t Device::atTransferQueueFamilyIndex = 0;
+
+void Device::SetupDevice(VkInstance instance_){
+    instance = instance_;
 
     PickPhysicalDevice();
     GetQueueFamilyIndices();
@@ -95,6 +106,7 @@ void Device::GetQueues(){
     uint32_t queueFamilyIndex = 0;
     for(const VkQueueFamilyProperties& queueFamily : queueFamilyProperties){
         if((queueFamily.queueFlags & VK_QUEUE_TRANSFER_BIT) == VK_QUEUE_TRANSFER_BIT && (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT) != VK_QUEUE_GRAPHICS_BIT){
+            transferQueueFamilyIndices.push_back(queueFamilyIndex);
             for(uint32_t i = 0; i < queueFamily.queueCount; i++){
                 VkQueue queue;
                 vkGetDeviceQueue(logicalDevice, queueFamilyIndex, i, &queue);
@@ -102,6 +114,7 @@ void Device::GetQueues(){
             }
         }
         else if((queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT) == VK_QUEUE_GRAPHICS_BIT){
+            graphicsQueueFamilyIndices.push_back(queueFamilyIndex);
             for(uint32_t i = 0; i < queueFamily.queueCount; i++){
                 VkQueue queue;
                 vkGetDeviceQueue(logicalDevice, queueFamilyIndex, i, &queue);
@@ -112,6 +125,40 @@ void Device::GetQueues(){
     }
 
 }
+
+DeviceQueueFamily Device::GetQueueFamilyIndices(uint32_t queueBits){
+    DeviceQueueFamily deviceQueue;
+    
+    if((queueBits & GRAPHICS_QUEUE) == GRAPHICS_QUEUE){
+        deviceQueue.queueFamilyIndices.push_back(graphicsQueueFamilyIndices[atGraphicsQueueFamilyIndex]);
+        atGraphicsQueueFamilyIndex++;
+        if(atGraphicsQueueFamilyIndex == graphicsQueueFamilyIndices.size()){
+            atGraphicsQueueFamilyIndex = 0;
+        }
+    }
+    if((queueBits & TRANSFER_QUEUE) == TRANSFER_QUEUE){
+        deviceQueue.queueFamilyIndices.push_back(transferQueueFamilyIndices[atTransferQueueFamilyIndex]);
+        atTransferQueueFamilyIndex++;
+        if(atTransferQueueFamilyIndex == transferQueueFamilyIndices.size()){
+            atTransferQueueFamilyIndex = 0;
+        }
+    }
+
+    return deviceQueue;
+}
+
+uint32_t Device::FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties){
+    VkPhysicalDeviceMemoryProperties memProperties;
+    vkGetPhysicalDeviceMemoryProperties(physicalDevice, &memProperties);
+
+    for(uint32_t i = 0; i < memProperties.memoryTypeCount; i++){
+        if(typeFilter & (1 << i) && (memProperties.memoryTypes[i].propertyFlags & properties) == properties){//TODO comprehend
+            return i;
+        }
+    }
+
+    throw std::runtime_error("\x1B[31m[ERROR]\033[0m\t\t Failed to find suitable memory type");
+}	
 
 VkDevice& Device::GetLogicalDevice(){
     return logicalDevice;

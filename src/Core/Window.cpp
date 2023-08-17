@@ -57,4 +57,12 @@ void Window::CopyFrom(const Window& other){
     instanceCount++;
 }
 
+GLFWwindow* Window::GetWindow(){
+    return pWindow;
+}
+
+glm::vec2 Window::GetDimensions(){
+    return dimensions;
+}
+
 };

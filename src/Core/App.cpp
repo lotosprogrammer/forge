@@ -1,5 +1,7 @@
 #include "App.hpp"
 
+#include "../Essentials/Image.hpp"
+
 namespace Forge{
 
 
@@ -15,7 +17,9 @@ App::App(){
     }
 
     CreateInstance();
-    device.SetupDevice(instance);
+    Device::SetupDevice(instance);
+
+    Image image = Image(0, 1, {10, 10}, VK_SAMPLE_COUNT_1_BIT, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT, VK_SHARING_MODE_EXCLUSIVE, VK_IMAGE_LAYOUT_UNDEFINED, (uint32_t)TRANSFER_QUEUE);
 }
 
 App::App(const App& other){
@@ -33,14 +37,13 @@ App& App::operator=(const App& other){
 }
 
 App::~App(){
-    device.CleanupDevice();
-   vkDestroyInstance(instance, nullptr); 
+    Device::CleanupDevice();
+    vkDestroyInstance(instance, nullptr); 
 }
 
 void App::CopyFrom(const App& other){
     instance = other.instance;
     window = other.window;
-    device = other.device;
 }
 
 void App::CreateInstance(){

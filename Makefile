@@ -1,8 +1,7 @@
 # Compiler settings - Can be customized.
 CC = g++
-CXXFLAGS = -std=c++23 -Wall -Wpedantic #-O3
-LDFLAGS = -lglfw -lvulkan
-
+CXXFLAGS = -std=c++23 -Wall -Wpedantic #-O3 
+LDFLAGS = -lglfw -lvulkan 
 # Makefile settings - Can be customized.
 APPNAME = a
 EXT = .cpp

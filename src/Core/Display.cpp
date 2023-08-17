@@ -5,9 +5,9 @@ namespace Forge{
 Display::Display(){}
 
 Display::Display(VkInstance instance, Window* window){
-    this->device = &Device::GetLogicalDevice();
+    this->pDevice = &Device::GetLogicalDevice();
     this->instance = instance;
-    this->window = window;
+    this->pWindow = window;
 
     CreateSurface();
 }
@@ -18,14 +18,14 @@ Display::~Display(){
     }
 
     for(const VkImageView& imageView : swapchainImageViews.get()[0]){
-        vkDestroyImageView(device[0], imageView, nullptr);
+        vkDestroyImageView(pDevice[0], imageView, nullptr);
     }
 
     for(const VkFramebuffer& framebuffer : swapchainFramebuffers.get()[0]){
-        vkDestroyFramebuffer(device[0], framebuffer, nullptr);
+        vkDestroyFramebuffer(pDevice[0], framebuffer, nullptr);
     }
 
-    vkDestroySwapchainKHR(device[0], swapchain.get()[0], nullptr);
+    vkDestroySwapchainKHR(pDevice[0], swapchain.get()[0], nullptr);
 
     vkDestroySurfaceKHR(instance, surface.get()[0], nullptr);
 
@@ -41,7 +41,12 @@ Display::Display(const Display& other){
 }
 
 Display& Display::operator=(const Display& other){
+    if(this == &other){
+        return *this;
+    }
     CopyFrom(other);
+
+    return *this;
 }
 
 void Display::CopyFrom(const Display& other){
@@ -52,7 +57,7 @@ void Display::CopyFrom(const Display& other){
 }
 
 void Display::CreateSurface(){
-    glfwCreateWindowSurface(instance, window->GetWindow(), nullptr, surface.get());
+    glfwCreateWindowSurface(instance, pWindow->GetWindow(), nullptr, surface.get());
 }
 
 };

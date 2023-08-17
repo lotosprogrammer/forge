@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <memory>
 
 #include <vulkan/vulkan.h>
 
@@ -16,9 +17,11 @@ public:
     DeviceMemory(const DeviceMemory& other);
     DeviceMemory& operator=(const DeviceMemory& other);
 
-    DeviceMemory GetMemory();
+    VkDeviceMemory GetMemory();
 private:
     VkDeviceMemory memory;
+    std::shared_ptr<char> instanceCount;//arbitrary type
+
 };
 
 };
