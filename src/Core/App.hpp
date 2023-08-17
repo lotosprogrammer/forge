@@ -16,7 +16,7 @@
 #include "Device.hpp"
 
 namespace Forge{
-
+    
 class App{
 public:
     App();

@@ -1,0 +1,3 @@
+/home/kweezo/Desktop/Forge/CMakeFiles/Forge.dir
+/home/kweezo/Desktop/Forge/CMakeFiles/edit_cache.dir
+/home/kweezo/Desktop/Forge/CMakeFiles/rebuild_cache.dir
