@@ -4,3 +4,6 @@ a
 ad
 *.d
 token.txt
+CMakeFiles
+CMakeCache.txt
+cmake_install.cmake

@@ -11,6 +11,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 add_executable(Forge ${SOURCES})
 set_target_properties(Forge PROPERTIES LINKER_LANGUAGE CXX)
 
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE "Release")
+endif()
+
+
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -g -Wall -Wpedantic")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -Wpedantic")
 

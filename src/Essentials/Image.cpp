@@ -48,6 +48,7 @@ Image::Image(VkImageCreateFlags flags, uint32_t mipLevels, VkExtent2D extent,
 Image::~Image(){
     if(instanceCount.use_count() == 1){
         vkDestroyImage(Device::GetLogicalDevice(), image, nullptr);
+    
     }
 }
 

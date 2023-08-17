@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -I/home/kweezo/Desktop/Forge/src/Core -I/home/kweezo/Desktop/Forge/src/Essentials
 
-CXX_FLAGS = -std=gnu++23
+CXX_FLAGS = -O3 -DNDEBUG -Wall -Wpedantic -std=gnu++23
 

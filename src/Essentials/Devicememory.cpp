@@ -25,7 +25,7 @@ DeviceMemory::DeviceMemory(VkDeviceSize allocationSize, uint32_t memoryTypeIndex
 }
 
 DeviceMemory::DeviceMemory(const DeviceMemory& other){
-    memory = other.memory;
+     memory = other.memory;
     instanceCount = other.instanceCount;
 }
 
