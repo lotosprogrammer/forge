@@ -34,10 +34,12 @@ private:
 
     VkInstance instance;
 
-    std::shared_ptr<VkSwapchainKHR> swapchain;
-    std::shared_ptr<VkSurfaceKHR> surface;
-    std::shared_ptr<std::vector<VkImageView>> swapchainImageViews;
-    std::shared_ptr<std::vector<VkFramebuffer>> swapchainFramebuffers;
+    VkSwapchainKHR swapchain;
+    VkSurfaceKHR surface;
+    std::vector<VkImageView> swapchainImageViews;
+    std::vector<VkFramebuffer> swapchainFramebuffers;
+
+    std::shared_ptr<char> instanceCount;
 };
 
 

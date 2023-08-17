@@ -11,8 +11,8 @@ DeviceMemory::~DeviceMemory(){
 }
 
 DeviceMemory::DeviceMemory(VkDeviceSize allocationSize, uint32_t memoryTypeIndex){
-    
-    
+    instanceCount.reset(new char);
+
     VkMemoryAllocateInfo allocInfo;
     allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
     allocInfo.pNext = nullptr;

@@ -5,6 +5,8 @@ namespace Forge{
 Display::Display(){}
 
 Display::Display(VkInstance instance, Window* window){
+    instanceCount.reset(new char);
+    
     this->pDevice = &Device::GetLogicalDevice();
     this->instance = instance;
     this->pWindow = window;
@@ -13,27 +15,22 @@ Display::Display(VkInstance instance, Window* window){
 }
 
 Display::~Display(){
-    if(swapchain.use_count() > 1){
+    if(instanceCount.use_count() > 1){
         return;
     }
 
-    for(const VkImageView& imageView : swapchainImageViews.get()[0]){
+    for(const VkImageView& imageView : swapchainImageViews){
         vkDestroyImageView(pDevice[0], imageView, nullptr);
     }
 
-    for(const VkFramebuffer& framebuffer : swapchainFramebuffers.get()[0]){
+    for(const VkFramebuffer& framebuffer : swapchainFramebuffers){
         vkDestroyFramebuffer(pDevice[0], framebuffer, nullptr);
     }
 
-    vkDestroySwapchainKHR(pDevice[0], swapchain.get()[0], nullptr);
+    vkDestroySwapchainKHR(pDevice[0], swapchain, nullptr);
 
-    vkDestroySurfaceKHR(instance, surface.get()[0], nullptr);
+    vkDestroySurfaceKHR(instance, surface, nullptr);
 
-    swapchain.reset();
-    surface.reset();
-    swapchainFramebuffers.reset();
-    swapchainImageViews.reset(); // IMAGEVIEW AND BUFFER CLASSES PROS: easier resource managament, simpler, faster, easeier to debug,
-    //CONS:
 }
 
 Display::Display(const Display& other){
@@ -54,10 +51,11 @@ void Display::CopyFrom(const Display& other){
     surface = other.surface;
     swapchainImageViews = other.swapchainImageViews;
     swapchainFramebuffers = other.swapchainFramebuffers;
+    instanceCount = other.instanceCount;
 }
 
 void Display::CreateSurface(){
-    glfwCreateWindowSurface(instance, pWindow->GetWindow(), nullptr, surface.get());
+    glfwCreateWindowSurface(instance, pWindow->GetWindow(), nullptr, &surface);
 }
 
 };

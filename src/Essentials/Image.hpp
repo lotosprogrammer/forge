@@ -22,6 +22,8 @@ public:
 private:
     void CopyFrom(const Image& other);
 
+    std::shared_ptr<char> instanceCount; //arbitraryType
+
     VkImage image;
     DeviceMemory memory;//todo, make it a class
 

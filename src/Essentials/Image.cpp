@@ -5,8 +5,9 @@ namespace Forge{
 Image::Image(){}
 
 Image::Image(VkImageCreateFlags flags, uint32_t mipLevels, VkExtent2D extent,
-    
     VkSampleCountFlagBits samples, VkImageTiling tiling, VkImageUsageFlags usage, VkSharingMode sharingMode, VkImageLayout layout, uint32_t usageBits){
+
+    instanceCount.reset(new char);
 
     VkImageCreateInfo createInfo{};
 
@@ -45,7 +46,9 @@ Image::Image(VkImageCreateFlags flags, uint32_t mipLevels, VkExtent2D extent,
 }
 
 Image::~Image(){
-    vkDestroyImage(Device::GetLogicalDevice(), image, nullptr);
+    if(instanceCount.use_count() == 1){
+        vkDestroyImage(Device::GetLogicalDevice(), image, nullptr);
+    }
 }
 
 Image::Image(const Image& other){
@@ -64,6 +67,7 @@ Image& Image::operator=(const Image& other){
 void Image::CopyFrom(const Image& other){
     image = other.image;
     memory = other.memory;
+    instanceCount = other.instanceCount;
 }
 
 };
