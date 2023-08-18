@@ -18,7 +18,7 @@ std::vector<uint32_t> Device::graphicsQueueFamilyIndices = {};
 uint32_t Device::atGraphicsQueueFamilyIndex = 0;
 uint32_t Device::atTransferQueueFamilyIndex = 0;
 
-void Device::SetupDevice(VkInstance instance_){
+void Device::SetupDevice(VkInstance instance_, std::vector<const char*>& extensions){
     instance = instance_;
 
     PickPhysicalDevice();
@@ -32,6 +32,8 @@ void Device::SetupDevice(VkInstance instance_){
     createInfo.pEnabledFeatures = nullptr;
     createInfo.queueCreateInfoCount = deviceQueueCreateInfos.size();
     createInfo.pQueueCreateInfos = deviceQueueCreateInfos.data();
+    createInfo.enabledExtensionCount = extensions.size();
+    createInfo.ppEnabledExtensionNames = extensions.data();
 
     vkCreateDevice(physicalDevice, &createInfo, nullptr, &logicalDevice);
     GetQueues();
@@ -45,7 +47,7 @@ void Device::PickPhysicalDevice(){
     std::vector<VkPhysicalDevice> physicalDevices(physicalDeviceCount);
 
     vkEnumeratePhysicalDevices(instance, &physicalDeviceCount, physicalDevices.data());
-
+ 
     VkPhysicalDeviceType currentDeviceType{};
 
     for(const VkPhysicalDevice& device : physicalDevices){

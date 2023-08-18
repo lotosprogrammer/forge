@@ -5,7 +5,7 @@ namespace Forge{
 Image::Image(){}
 
 Image::Image(VkImageCreateFlags flags, uint32_t mipLevels, VkExtent2D extent,
-    VkSampleCountFlagBits samples, VkImageTiling tiling, VkImageUsageFlags usage, VkSharingMode sharingMode, VkImageLayout layout, uint32_t usageBits){
+    VkSampleCountFlagBits samples, VkImageTiling tiling, VkImageUsageFlags usage, VkSharingMode sharingMode, VkImageLayout layout, uint32_t usageBits, VkFormat format){
 
     instanceCount.reset(new char);
 

@@ -13,14 +13,13 @@ Display::Display(VkInstance instance, Window* window){
     this->pWindow = window;
 
     CreateSurface();
-    //CreateSwapchain();
+    CreateSwapchain();
 }
 
 Display::~Display(){
-    if(instanceCount.use_count() > 1){
+    if(instanceCount.use_count() > 1 || instanceCount.use_count() < 1){
         return;
     }
-
     for(const VkImageView& imageView : swapchainImageViews){
         vkDestroyImageView(pDevice[0], imageView, nullptr);
     }
@@ -57,7 +56,9 @@ void Display::CopyFrom(const Display& other){
 }
 
 void Display::CreateSurface(){
-    glfwCreateWindowSurface(instance, pWindow->GetWindow(), nullptr, &surface);
+    if(glfwCreateWindowSurface(instance, pWindow->GetWindow(), nullptr, &surface) != VK_SUCCESS){
+        throw std::runtime_error("\x1B[31m[ERROR]\033[0m\t\t failed to create a window surface");
+    }
 
     VkSurfaceCapabilitiesKHR capabilites;
 
@@ -68,12 +69,53 @@ void Display::CreateSurface(){
 }
 
 void Display::CreateSwapchain(){
+
+    uint32_t surfaceFormatCount;
+
+    vkGetPhysicalDeviceSurfaceFormatsKHR(Device::GetPhysicalDevice(), surface, &surfaceFormatCount, nullptr);
+
+    std::vector<VkSurfaceFormatKHR> surfaceFormats(surfaceFormatCount);
+
+    vkGetPhysicalDeviceSurfaceFormatsKHR(Device::GetPhysicalDevice(), surface, &surfaceFormatCount, surfaceFormats.data());
+
+    VkSurfaceFormatKHR bestFormat{};
+
+    for(const VkSurfaceFormatKHR& format : surfaceFormats){
+        if(format.format == VK_FORMAT_B8G8R8A8_SRGB && format.colorSpace == VK_COLORSPACE_SRGB_NONLINEAR_KHR){
+            bestFormat = format;
+        }
+    }
+    if(bestFormat.format == VK_FORMAT_UNDEFINED){
+        bestFormat = surfaceFormats[0];
+    }
+
+
+
     VkSwapchainCreateInfoKHR createInfo{};
     createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
     createInfo.pNext = nullptr;
     createInfo.surface = surface;
     createInfo.minImageCount = swapchainImageCount;
-    createInfo.imageColorSpace = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR;
+    createInfo.imageColorSpace = bestFormat.colorSpace;//todo find the best one
+    createInfo.imageExtent = surfaceExtent;
+    createInfo.imageArrayLayers = 1;
+    createInfo.imageFormat = bestFormat.format;
+    createInfo.preTransform = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR; 
+    createInfo.presentMode = VK_PRESENT_MODE_FIFO_KHR;
+    createInfo.clipped = true;
+    createInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
+    createInfo.oldSwapchain = VK_NULL_HANDLE;
+    createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+
+    DeviceQueueFamily deviceQueueFamily = Device::GetQueueFamilyIndices(GRAPHICS_QUEUE | TRANSFER_QUEUE);
+
+    createInfo.imageSharingMode = VK_SHARING_MODE_CONCURRENT;
+    createInfo.pQueueFamilyIndices = deviceQueueFamily.queueFamilyIndices.data();
+    createInfo.queueFamilyIndexCount = deviceQueueFamily.queueFamilyIndices.size();
+
+    if(vkCreateSwapchainKHR(pDevice[0], &createInfo, nullptr, &swapchain) != VK_SUCCESS){
+        throw std::runtime_error("\x1B[31m[ERROR]\033[0m\t\t Failed to create a swapchain");
+    }
 }
 
 };

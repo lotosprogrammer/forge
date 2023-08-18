@@ -32,6 +32,7 @@ private:
 
     void CreateSurface();
     void CreateSwapchain();
+    void CreateSwapchainImageViews();
 
     Window* pWindow;
     VkDevice* pDevice;//for convenience

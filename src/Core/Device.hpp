@@ -25,7 +25,7 @@ public:
     static uint32_t FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
 
 
-    static void SetupDevice(VkInstance instance);
+    static void SetupDevice(VkInstance instance, std::vector<const char*>& extensions);
     static void CleanupDevice();
 
 private:

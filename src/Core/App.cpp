@@ -17,10 +17,8 @@ App::App(){
     }
 
     CreateInstance();
-    Device::SetupDevice(instance);
-
-    Image image = Image(0, 1, {10, 10}, VK_SAMPLE_COUNT_1_BIT, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT, VK_SHARING_MODE_EXCLUSIVE, VK_IMAGE_LAYOUT_UNDEFINED, (uint32_t)TRANSFER_QUEUE);
-}
+    Device::SetupDevice(instance, deviceExtensions);
+}    
 
 App::App(const App& other){
     CopyFrom(other);
@@ -114,6 +112,8 @@ void App::CheckExtensionSupport(){
 
 void App::CreateWindow(glm::vec2 dimensions, std::string title, bool fullscreen){
     window = Window(dimensions, title, fullscreen);
+
+    Display display = Display(instance, &window);
 }
 
 };

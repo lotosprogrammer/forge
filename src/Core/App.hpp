@@ -14,6 +14,7 @@
 
 #include "Window.hpp"
 #include "Device.hpp"
+#include "Display.hpp"
 
 namespace Forge{
     
@@ -38,6 +39,10 @@ private:
     };
     std::vector<const char*> validationLayers = { //TODO check validation layer support
         "VK_LAYER_KHRONOS_validation"
+    };
+
+    std::vector<const char*> deviceExtensions = {
+        VK_KHR_SWAPCHAIN_EXTENSION_NAME,
     };
 
     static bool glfwInitialized;
