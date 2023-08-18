@@ -10,6 +10,7 @@ namespace Forge{
 
 #define GRAPHICS_QUEUE 1
 #define TRANSFER_QUEUE 2
+#define COMPUTE_QUEUE 4
 
 struct DeviceQueueFamily{
     std::vector<uint32_t> queueFamilyIndices = {};

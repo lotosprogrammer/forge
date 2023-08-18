@@ -1,5 +1,6 @@
 #include "Display.hpp"
 
+
 namespace Forge{
 
 Display::Display(){}
@@ -12,6 +13,7 @@ Display::Display(VkInstance instance, Window* window){
     this->pWindow = window;
 
     CreateSurface();
+    //CreateSwapchain();
 }
 
 Display::~Display(){
@@ -56,6 +58,22 @@ void Display::CopyFrom(const Display& other){
 
 void Display::CreateSurface(){
     glfwCreateWindowSurface(instance, pWindow->GetWindow(), nullptr, &surface);
+
+    VkSurfaceCapabilitiesKHR capabilites;
+
+    vkGetPhysicalDeviceSurfaceCapabilitiesKHR(Device::GetPhysicalDevice(), surface, &capabilites);
+
+    swapchainImageCount = std::clamp(desiredSwapchainImageCount, capabilites.minImageCount, capabilites.maxImageCount);
+    surfaceExtent = capabilites.currentExtent;
+}
+
+void Display::CreateSwapchain(){
+    VkSwapchainCreateInfoKHR createInfo{};
+    createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
+    createInfo.pNext = nullptr;
+    createInfo.surface = surface;
+    createInfo.minImageCount = swapchainImageCount;
+    createInfo.imageColorSpace = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR;
 }
 
 };
