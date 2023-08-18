@@ -7,6 +7,9 @@
 
 #include "Device.hpp"
 
+namespace Forge{
+
+
 class ImageView{
 public:
     ImageView();
@@ -14,10 +17,14 @@ public:
     ~ImageView();
     ImageView(const ImageView& other);
     ImageView& operator=(const ImageView& other);
+
+    VkImageView GetImageView();
 private:
     void CopyFrom(const ImageView& other);
 
     std::shared_ptr<char> instanceCount;
 
     VkImageView imageView;
+};
+
 };
