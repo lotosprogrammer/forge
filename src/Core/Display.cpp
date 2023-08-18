@@ -14,18 +14,20 @@ Display::Display(VkInstance instance, Window* window){
 
     CreateSurface();
     CreateSwapchain();
+    CreateSwapchainImageViews();
 }
 
 Display::~Display(){
     if(instanceCount.use_count() > 1 || instanceCount.use_count() < 1){
         return;
     }
-    for(const VkImageView& imageView : swapchainImageViews){
-        vkDestroyImageView(pDevice[0], imageView, nullptr);
-    }
 
     for(const VkFramebuffer& framebuffer : swapchainFramebuffers){
         vkDestroyFramebuffer(pDevice[0], framebuffer, nullptr);
+    }
+
+    for(const ImageView* imageView : swapchainImageViews){
+        delete imageView;
     }
 
     vkDestroySwapchainKHR(pDevice[0], swapchain, nullptr);
@@ -115,6 +117,36 @@ void Display::CreateSwapchain(){
 
     if(vkCreateSwapchainKHR(pDevice[0], &createInfo, nullptr, &swapchain) != VK_SUCCESS){
         throw std::runtime_error("\x1B[31m[ERROR]\033[0m\t\t Failed to create a swapchain");
+    }
+
+    swapchainImageFormat = bestFormat.format;
+}
+
+void Display::CreateSwapchainImageViews(){
+    uint32_t swapChainImageCount;
+
+    vkGetSwapchainImagesKHR(pDevice[0], swapchain, &swapchainImageCount, nullptr);
+
+    std::vector<VkImage> swapchainImages(swapchainImageCount);
+
+    vkGetSwapchainImagesKHR(pDevice[0], swapchain, &swapChainImageCount, swapchainImages.data());
+
+    VkImageSubresourceRange subresourceRange;
+    subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+    subresourceRange.baseMipLevel = 0;
+    subresourceRange.levelCount = 1;
+    subresourceRange.baseArrayLayer = 0;
+    subresourceRange.layerCount = 1;
+
+    VkComponentMapping components;
+    components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
+    components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
+    components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
+    components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
+
+
+    for(const VkImage& swapchainImage : swapchainImages){
+        swapchainImageViews.push_back(new ImageView(swapchainImage, VK_IMAGE_VIEW_TYPE_2D, swapchainImageFormat, components, subresourceRange));
     }
 }
 

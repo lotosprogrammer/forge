@@ -5,7 +5,7 @@
 
 #include <vulkan/vulkan.h>
 
-#include "Device.hpp"
+#include "../Core/Device.hpp"
 
 namespace Forge{
 

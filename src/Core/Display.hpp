@@ -15,6 +15,7 @@
 
 #include "Device.hpp"
 #include "Window.hpp"
+#include "../Essentials/ImageView.hpp"
 
 namespace Forge{
 
@@ -40,8 +41,10 @@ private:
     VkInstance instance;
 
     VkSwapchainKHR swapchain;
+    VkFormat swapchainImageFormat;
+
     VkSurfaceKHR surface;
-    std::vector<VkImageView> swapchainImageViews;
+    std::vector<ImageView*> swapchainImageViews;
     std::vector<VkFramebuffer> swapchainFramebuffers;
 
     std::shared_ptr<char> instanceCount;

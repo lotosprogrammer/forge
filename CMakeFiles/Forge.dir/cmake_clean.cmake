@@ -11,6 +11,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/Forge.dir/src/Essentials/Devicememory.cpp.o.d"
   "CMakeFiles/Forge.dir/src/Essentials/Image.cpp.o"
   "CMakeFiles/Forge.dir/src/Essentials/Image.cpp.o.d"
+  "CMakeFiles/Forge.dir/src/Essentials/ImageView.cpp.o"
+  "CMakeFiles/Forge.dir/src/Essentials/ImageView.cpp.o.d"
   "CMakeFiles/Forge.dir/src/main.cpp.o"
   "CMakeFiles/Forge.dir/src/main.cpp.o.d"
   "Forge"

@@ -81,12 +81,12 @@ clean: CMakeFiles/Forge.dir/clean
 CMakeFiles/Forge.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Forge.dir/build.make CMakeFiles/Forge.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Forge.dir/build.make CMakeFiles/Forge.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/kweezo/Desktop/Forge/CMakeFiles --progress-num=1,2,3,4,5,6,7,8 "Built target Forge"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/kweezo/Desktop/Forge/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9 "Built target Forge"
 .PHONY : CMakeFiles/Forge.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/Forge.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/kweezo/Desktop/Forge/CMakeFiles 8
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kweezo/Desktop/Forge/CMakeFiles 9
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Forge.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/kweezo/Desktop/Forge/CMakeFiles 0
 .PHONY : CMakeFiles/Forge.dir/rule
