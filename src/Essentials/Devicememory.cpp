@@ -20,7 +20,7 @@ DeviceMemory::DeviceMemory(VkDeviceSize allocationSize, uint32_t memoryTypeIndex
     allocInfo.memoryTypeIndex = memoryTypeIndex;
 
     if(vkAllocateMemory(Device::GetLogicalDevice(), &allocInfo, nullptr, &memory) != VK_SUCCESS){
-        throw std::runtime_error("\x1B[31m[ERROR]\033[0m\t\t failed to allocate memory");
+        throw std::runtime_error("\x1B[31m[ERROR]\033[0m  failed to allocate memory");
     }
 }
 

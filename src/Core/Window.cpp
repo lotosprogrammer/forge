@@ -19,7 +19,7 @@ Window::Window(glm::vec2 dimensions, std::string title, bool fullscreen){
     
     pWindow = glfwCreateWindow(dimensions.x, dimensions.y, title.c_str(), fullscreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
     if(pWindow == nullptr){
-        throw std::runtime_error("\x1B[31m[ERROR]\033[0m\t\t failed to create a glfw window");
+        throw std::runtime_error("\x1B[31m[ERROR]\033[0m  failed to create a glfw window");
     }
 
     this->dimensions = dimensions;

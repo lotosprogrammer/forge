@@ -15,6 +15,8 @@ Display::Display(VkInstance instance, Window* window){
     CreateSurface();
     CreateSwapchain();
     CreateSwapchainImageViews();
+    CreateRenderPass();
+    CreateFramebuffers();
 }
 
 Display::~Display(){
@@ -22,9 +24,13 @@ Display::~Display(){
         return;
     }
 
+
+
     for(const VkFramebuffer& framebuffer : swapchainFramebuffers){
         vkDestroyFramebuffer(pDevice[0], framebuffer, nullptr);
     }
+
+    vkDestroyRenderPass(pDevice[0], renderPass, nullptr);
 
     for(const ImageView* imageView : swapchainImageViews){
         delete imageView;
@@ -59,7 +65,7 @@ void Display::CopyFrom(const Display& other){
 
 void Display::CreateSurface(){
     if(glfwCreateWindowSurface(instance, pWindow->GetWindow(), nullptr, &surface) != VK_SUCCESS){
-        throw std::runtime_error("\x1B[31m[ERROR]\033[0m\t\t failed to create a window surface");
+        throw std::runtime_error("\x1B[31m[ERROR]\033[0m  failed to create a window surface");
     }
 
     VkSurfaceCapabilitiesKHR capabilites;
@@ -116,7 +122,7 @@ void Display::CreateSwapchain(){
     createInfo.queueFamilyIndexCount = deviceQueueFamily.queueFamilyIndices.size();
 
     if(vkCreateSwapchainKHR(pDevice[0], &createInfo, nullptr, &swapchain) != VK_SUCCESS){
-        throw std::runtime_error("\x1B[31m[ERROR]\033[0m\t\t Failed to create a swapchain");
+        throw std::runtime_error("\x1B[31m[ERROR]\033[0m Failed to create a swapchain");
     }
 
     swapchainImageFormat = bestFormat.format;
@@ -150,4 +156,69 @@ void Display::CreateSwapchainImageViews(){
     }
 }
 
-};
+void Display::CreateFramebuffers(){
+    swapchainFramebuffers.resize(swapchainImageCount);
+
+    VkFramebufferCreateInfo createInfo{};
+    createInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+    createInfo.pNext = nullptr;
+    createInfo.flags = 0;
+    createInfo.renderPass = renderPass;
+    createInfo.width = surfaceExtent.width;
+    createInfo.height = surfaceExtent.height;
+    createInfo.layers = 1;
+    uint32_t i = 0;
+    for(ImageView* imageView : swapchainImageViews){
+        const std::vector<VkImageView> attachments = {
+            imageView->GetImageView()
+        };
+
+        createInfo.attachmentCount = attachments.size();
+        createInfo.pAttachments = attachments.data();
+
+
+        if(vkCreateFramebuffer(pDevice[0], &createInfo, nullptr, &swapchainFramebuffers[i]) != VK_SUCCESS){
+            throw std::runtime_error("\x1B[31m[ERROR]\033[0m failed to create a framebuffer");
+        }
+
+        i++;
+    }
+}
+
+void Display::CreateRenderPass(){
+    VkAttachmentDescription colorAttachment{};
+    colorAttachment.format = swapchainImageFormat;
+    colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
+    colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+    colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+    colorAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+    colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+    colorAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+    colorAttachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+
+    VkAttachmentReference colorAttachmentRef{};
+    colorAttachmentRef.attachment = 0;
+    colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
+    VkSubpassDescription subpass{};
+    subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+    subpass.colorAttachmentCount = 1;
+    subpass.pColorAttachments = &colorAttachmentRef;
+
+
+    VkRenderPassCreateInfo createInfo{};
+
+    createInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+    createInfo.pNext = nullptr;
+    createInfo.flags = 0;
+    createInfo.attachmentCount = 1;
+    createInfo.pAttachments = &colorAttachment;
+    createInfo.subpassCount = 1;
+    createInfo.pSubpasses = &subpass;
+
+    if(vkCreateRenderPass(pDevice[0], &createInfo, nullptr, &renderPass) != VK_SUCCESS){
+        throw std::runtime_error("\x1B[31m[ERROR]\033[0m failed to create a render pass");
+    }
+}
+
+}; 

@@ -201,6 +201,30 @@ src/Core/Display.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Forge.dir/build.make CMakeFiles/Forge.dir/src/Core/Display.cpp.s
 .PHONY : src/Core/Display.cpp.s
 
+src/Core/Renderer.o: src/Core/Renderer.cpp.o
+.PHONY : src/Core/Renderer.o
+
+# target to build an object file
+src/Core/Renderer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Forge.dir/build.make CMakeFiles/Forge.dir/src/Core/Renderer.cpp.o
+.PHONY : src/Core/Renderer.cpp.o
+
+src/Core/Renderer.i: src/Core/Renderer.cpp.i
+.PHONY : src/Core/Renderer.i
+
+# target to preprocess a source file
+src/Core/Renderer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Forge.dir/build.make CMakeFiles/Forge.dir/src/Core/Renderer.cpp.i
+.PHONY : src/Core/Renderer.cpp.i
+
+src/Core/Renderer.s: src/Core/Renderer.cpp.s
+.PHONY : src/Core/Renderer.s
+
+# target to generate assembly for a file
+src/Core/Renderer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Forge.dir/build.make CMakeFiles/Forge.dir/src/Core/Renderer.cpp.s
+.PHONY : src/Core/Renderer.cpp.s
+
 src/Core/Window.o: src/Core/Window.cpp.o
 .PHONY : src/Core/Window.o
 
@@ -339,6 +363,9 @@ help:
 	@echo "... src/Core/Display.o"
 	@echo "... src/Core/Display.i"
 	@echo "... src/Core/Display.s"
+	@echo "... src/Core/Renderer.o"
+	@echo "... src/Core/Renderer.i"
+	@echo "... src/Core/Renderer.s"
 	@echo "... src/Core/Window.o"
 	@echo "... src/Core/Window.i"
 	@echo "... src/Core/Window.s"

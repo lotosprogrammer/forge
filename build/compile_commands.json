@@ -16,6 +16,11 @@
 },
 {
   "directory": "/home/kweezo/Desktop/Forge/build",
+  "command": "/usr/bin/g++  -I/home/kweezo/Desktop/Forge/src/Core -I/home/kweezo/Desktop/Forge/src/Essentials -g -D_DEBUG -g -Wall -Wpedantic -std=gnu++23 -o CMakeFiles/Forge.dir/src/Core/Renderer.cpp.o -c /home/kweezo/Desktop/Forge/src/Core/Renderer.cpp",
+  "file": "/home/kweezo/Desktop/Forge/src/Core/Renderer.cpp"
+},
+{
+  "directory": "/home/kweezo/Desktop/Forge/build",
   "command": "/usr/bin/g++  -I/home/kweezo/Desktop/Forge/src/Core -I/home/kweezo/Desktop/Forge/src/Essentials -g -D_DEBUG -g -Wall -Wpedantic -std=gnu++23 -o CMakeFiles/Forge.dir/src/Core/Window.cpp.o -c /home/kweezo/Desktop/Forge/src/Core/Window.cpp",
   "file": "/home/kweezo/Desktop/Forge/src/Core/Window.cpp"
 },

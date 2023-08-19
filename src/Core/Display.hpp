@@ -34,6 +34,8 @@ private:
     void CreateSurface();
     void CreateSwapchain();
     void CreateSwapchainImageViews();
+    void CreateFramebuffers();
+    void CreateRenderPass();
 
     Window* pWindow;
     VkDevice* pDevice;//for convenience
@@ -53,6 +55,8 @@ private:
 
     const uint32_t desiredSwapchainImageCount = 2;
     uint32_t swapchainImageCount;
+
+    VkRenderPass renderPass;
 };
 
 

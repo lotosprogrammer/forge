@@ -15,6 +15,7 @@
 #include "Window.hpp"
 #include "Device.hpp"
 #include "Display.hpp"
+#include "Renderer.hpp"
 
 namespace Forge{
     

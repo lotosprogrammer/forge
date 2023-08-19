@@ -19,7 +19,7 @@ ImageView::ImageView(VkImage image, VkImageViewType viewType, VkFormat format, V
     createInfo.subresourceRange = subresourceRange;
 
     if(vkCreateImageView(Device::GetLogicalDevice(), &createInfo, nullptr, &imageView) != VK_SUCCESS){
-        throw std::runtime_error("\x1B[31m[ERROR]\033[0m\t\t failed to create an image view");
+        throw std::runtime_error("\x1B[31m[ERROR]\033[0m  failed to create an image view");
     }
 }
 
@@ -39,6 +39,10 @@ ImageView& ImageView::operator=(const ImageView& other){
 
 void ImageView::CopyFrom(const ImageView& other){
     imageView = other.imageView;
+}
+
+VkImageView ImageView::GetImageView(){
+    return imageView;
 }
 
 ImageView::~ImageView(){

@@ -32,7 +32,7 @@ Image::Image(VkImageCreateFlags flags, uint32_t mipLevels, VkExtent2D extent,
 
 
     if(vkCreateImage(Device::GetLogicalDevice(), &createInfo, nullptr, &image) != VK_SUCCESS){
-        throw std::runtime_error("\x1B[31m[ERROR]\033[0m\t\t failed to create an image");
+        throw std::runtime_error("\x1B[31m[ERROR]\033[0m  failed to create an image");
     }
 
 

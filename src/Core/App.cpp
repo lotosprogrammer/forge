@@ -10,7 +10,7 @@ bool App::glfwInitialized = false;
 App::App(){
     if(!glfwInitialized){
         if(!glfwInit()){
-            throw std::runtime_error("\x1B[31m[ERROR]\033[0m\t\t failed to init GLFW3");
+            throw std::runtime_error("\x1B[31m[ERROR]\033[0m  failed to init GLFW3");
         }
 
         glfwInitialized = true;
@@ -84,7 +84,7 @@ void App::CreateInstance(){
     createInfo.pNext = nullptr;
 
     if(vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS){
-        throw std::runtime_error("\x1B[31m[ERROR]\033[0m\t\t failed to create a vulkan instance");
+        throw std::runtime_error("\x1B[31m[ERROR]\033[0m  failed to create a vulkan instance");
     }
 }
 
@@ -104,7 +104,7 @@ void App::CheckExtensionSupport(){
             }
         }
         if(!match){
-            throw std::runtime_error("\x1B[31m[ERROR]\033[0m\t\t not all required extensions are supported, check your GPU drivers");
+            throw std::runtime_error("\x1B[31m[ERROR]\033[0m  not all required extensions are supported, check your GPU drivers");
         }
     }
 
@@ -114,6 +114,7 @@ void App::CreateWindow(glm::vec2 dimensions, std::string title, bool fullscreen)
     window = Window(dimensions, title, fullscreen);
 
     Display display = Display(instance, &window);
+    Renderer renderer = Renderer();
 }
 
 };

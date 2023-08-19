@@ -62,7 +62,7 @@ void Device::PickPhysicalDevice(){
     }
 
     if(physicalDevice == VK_NULL_HANDLE){
-        throw std::runtime_error("\x1B[31m[ERROR]\033[0m\t\t Failed to find a GPU, I have no idea why");
+        throw std::runtime_error("\x1B[31m[ERROR]\033[0m  Failed to find a GPU, I have no idea why");
     }
 
 }
@@ -159,7 +159,7 @@ uint32_t Device::FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags prope
         }
     }
 
-    throw std::runtime_error("\x1B[31m[ERROR]\033[0m\t\t Failed to find suitable memory type");
+    throw std::runtime_error("\x1B[31m[ERROR]\033[0m  Failed to find suitable memory type");
 }	
 
 VkDevice& Device::GetLogicalDevice(){
